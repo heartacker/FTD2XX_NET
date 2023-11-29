@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 
+// https://github.com/dotnet/iot/blob/main/src/devices/FtCommo
+
 namespace FTD2XX_NET
 {
     /// <summary>

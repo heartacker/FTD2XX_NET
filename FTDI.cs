@@ -373,14 +373,17 @@ namespace FTD2XX_NET
                         hFTD2XXDLL = LoadLibrary(Path.GetDirectoryName(GetType().Assembly.Location) + $"\\{libpathWindows}");
                     }
                 }
+
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
+#if false
                     hFTD2XXDLL = dlopen(libpathLinux, 2);
                     if (hFTD2XXDLL == IntPtr.Zero)
                     {
                         Console.WriteLine($"Attempting to load {libpathLinux} from:\n" + Path.GetDirectoryName(GetType().Assembly.Location));
                         hFTD2XXDLL = LoadLibrary(Path.GetDirectoryName(GetType().Assembly.Location) + $"\\{libpathLinux}");
                     }
+#endif
                 }
             }
             if (hFTD2XXDLL != IntPtr.Zero)
@@ -503,11 +506,11 @@ namespace FTD2XX_NET
 
         [DllImport("libdl", ExactSpelling = true)]
         public static extern IntPtr dlopen(string filename, int flags);
-        //GetProc��ַ��
+        //GetProcµØÖ·£º
 
         [DllImport("libdl", ExactSpelling = true)]
         public static extern IntPtr dlsym(IntPtr handle, string symbol);
-        //���ͼ��ݣ�
+        //Ãâ·ÑÍ¼Êé¹Ý£º
 
         [DllImport("libdl", ExactSpelling = true)]
         public static extern int dlclose(IntPtr handle);

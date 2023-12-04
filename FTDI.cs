@@ -349,12 +349,9 @@ namespace FTD2XX_NET
             }
         }
 
-        //const int RTLD_NOW = 0x002;
-        //IntPtr pDll = dlopen("ourdevice.so.0", RTLD_NOW);
-        //IntPtr pAddressOfFunction = dlsym(pDll, "AdcOpen");
 
-        // dlclose(pDll);
         string libpathWindows = "FTD2XX.DLL";
+
         string libpathLinux = "libftd2xx.so.1.4.27";
 
         /// <summary>
@@ -362,30 +359,35 @@ namespace FTD2XX_NET
         /// </summary>
         public FTDI()
         {
+            bool ntryl = false;
             if (hFTD2XXDLL == IntPtr.Zero)
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    hFTD2XXDLL = LoadLibrary(libpathWindows);
+                    // hFTD2XXDLL = LoadLibrary(libpathWindows);
+                    ntryl = NativeLibrary.TryLoad(libpathWindows, out hFTD2XXDLL);
                     if (hFTD2XXDLL == IntPtr.Zero)
                     {
                         Console.WriteLine($"Attempting to load {libpathWindows} from:\n" + Path.GetDirectoryName(GetType().Assembly.Location));
-                        hFTD2XXDLL = LoadLibrary(Path.GetDirectoryName(GetType().Assembly.Location) + $"\\{libpathWindows}");
+                        ntryl = NativeLibrary.TryLoad(Path.GetDirectoryName(GetType().Assembly.Location) + $"\\{libpathWindows}", out hFTD2XXDLL);
                     }
                 }
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-#if false
-                    hFTD2XXDLL = dlopen(libpathLinux, 2);
+                    Console.WriteLine("Unsupported OS");
+                }
+                else // (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    // hFTD2XXDLL = dlopen(libpathLinux, 2);
+                    ntryl = NativeLibrary.TryLoad(libpathLinux, out hFTD2XXDLL);
                     if (hFTD2XXDLL == IntPtr.Zero)
                     {
                         Console.WriteLine($"Attempting to load {libpathLinux} from:\n" + Path.GetDirectoryName(GetType().Assembly.Location));
-                        hFTD2XXDLL = LoadLibrary(Path.GetDirectoryName(GetType().Assembly.Location) + $"\\{libpathLinux}");
+                        ntryl = NativeLibrary.TryLoad(Path.GetDirectoryName(GetType().Assembly.Location) + $"/{libpathLinux}", out hFTD2XXDLL);
                     }
-#endif
                 }
             }
+
             if (hFTD2XXDLL != IntPtr.Zero)
             {
                 FindFunctionPointers();
@@ -407,10 +409,10 @@ namespace FTD2XX_NET
             }
             if (hFTD2XXDLL == IntPtr.Zero)
             {
-                hFTD2XXDLL = LoadLibrary(path);
+                hFTD2XXDLL = NativeLibrary.Load(path);
                 if (hFTD2XXDLL == IntPtr.Zero)
                 {
-                    Console.WriteLine("Attempting to load FTD2XX.DLL from:\n" + Path.GetDirectoryName(GetType().Assembly.Location));
+                    Console.WriteLine("Attempting to load FTD2XX from:\n" + Path.GetDirectoryName(GetType().Assembly.Location));
                 }
             }
             if (hFTD2XXDLL != IntPtr.Zero)
@@ -478,8 +480,14 @@ namespace FTD2XX_NET
             pFT_EEPROM_Program = GetProcAddress(hFTD2XXDLL, "FT_EEPROM_Program");
             pFT_VendorCmdGet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdGet");
             pFT_VendorCmdSet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSet");
-            pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
+
+            // todo FIXME
+            //pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
         }
+
+
+        delegate IntPtr GetProcAddressType(IntPtr hFTD2XXDLL, string v);
+        delegate void FreeLibraryType(IntPtr hModule);
 
         /// <summary>
         /// Destructor for the FTDI class.
@@ -490,6 +498,7 @@ namespace FTD2XX_NET
             hFTD2XXDLL = IntPtr.Zero;
         }
 
+#if false
         /// <summary>
         /// Built-in Windows API functions to allow us to dynamically load our own DLL.
         /// Will allow us to use old versions of the DLL that do not have all of these functions available.
@@ -502,18 +511,22 @@ namespace FTD2XX_NET
 
         [DllImport("kernel32.dll")]
         private static extern bool FreeLibrary(IntPtr hModule);
+#else
+        GetProcAddressType GetProcAddress = NativeLibrary.GetExport;
+        FreeLibraryType FreeLibrary = NativeLibrary.Free;
+#endif
 
 
+#if false
         [DllImport("libdl", ExactSpelling = true)]
         public static extern IntPtr dlopen(string filename, int flags);
-        //GetProcµØÖ·£º
 
         [DllImport("libdl", ExactSpelling = true)]
         public static extern IntPtr dlsym(IntPtr handle, string symbol);
-        //Ãâ·ÑÍ¼Êé¹Ý£º
 
         [DllImport("libdl", ExactSpelling = true)]
         public static extern int dlclose(IntPtr handle);
+#endif
 
 
         /// <summary>

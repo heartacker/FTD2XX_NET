@@ -3,17 +3,18 @@
 		<AssemblyName>FTD2XX_NET</AssemblyName>
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<TargetFramework>NET8</TargetFramework>
+		<DefineConstants>$(DefineConstants);USE_FT4222_NO_FT232X</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<PropertyGroup />
 	<ItemGroup>
-	  <None Update="ftd2xx.dll">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="libftd2xx.so.1.4.27">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="ftd2xx.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="libftd2xx.so.1.4.27">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>

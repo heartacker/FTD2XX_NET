@@ -468,21 +468,25 @@ namespace FTD2XX_NET
             pFT_SetBitMode = GetProcAddress(hFTD2XXDLL, "FT_SetBitMode");
             pFT_GetBitMode = GetProcAddress(hFTD2XXDLL, "FT_GetBitMode");
             pFT_SetUSBParameters = GetProcAddress(hFTD2XXDLL, "FT_SetUSBParameters");
-            pFT_ReadEE = GetProcAddress(hFTD2XXDLL, "FT_ReadEE");
-            pFT_WriteEE = GetProcAddress(hFTD2XXDLL, "FT_WriteEE");
-            pFT_EraseEE = GetProcAddress(hFTD2XXDLL, "FT_EraseEE");
-            pFT_EE_UASize = GetProcAddress(hFTD2XXDLL, "FT_EE_UASize");
-            pFT_EE_UARead = GetProcAddress(hFTD2XXDLL, "FT_EE_UARead");
-            pFT_EE_UAWrite = GetProcAddress(hFTD2XXDLL, "FT_EE_UAWrite");
-            pFT_EE_Read = GetProcAddress(hFTD2XXDLL, "FT_EE_Read");
-            pFT_EE_Program = GetProcAddress(hFTD2XXDLL, "FT_EE_Program");
-            pFT_EEPROM_Read = GetProcAddress(hFTD2XXDLL, "FT_EEPROM_Read");
-            pFT_EEPROM_Program = GetProcAddress(hFTD2XXDLL, "FT_EEPROM_Program");
-            pFT_VendorCmdGet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdGet");
-            pFT_VendorCmdSet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSet");
 
-            // todo FIXME
-            //pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                pFT_ReadEE = GetProcAddress(hFTD2XXDLL, "FT_ReadEE");
+                pFT_WriteEE = GetProcAddress(hFTD2XXDLL, "FT_WriteEE");
+                pFT_EraseEE = GetProcAddress(hFTD2XXDLL, "FT_EraseEE");
+                pFT_EE_UASize = GetProcAddress(hFTD2XXDLL, "FT_EE_UASize");
+                pFT_EE_UARead = GetProcAddress(hFTD2XXDLL, "FT_EE_UARead");
+                pFT_EE_UAWrite = GetProcAddress(hFTD2XXDLL, "FT_EE_UAWrite");
+                pFT_EE_Read = GetProcAddress(hFTD2XXDLL, "FT_EE_Read");
+                pFT_EE_Program = GetProcAddress(hFTD2XXDLL, "FT_EE_Program");
+                pFT_EEPROM_Read = GetProcAddress(hFTD2XXDLL, "FT_EEPROM_Read");
+                pFT_EEPROM_Program = GetProcAddress(hFTD2XXDLL, "FT_EEPROM_Program");
+                pFT_VendorCmdGet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdGet");
+                pFT_VendorCmdSet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSet");
+                // todo FIXME
+                pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
+            }
+
         }
 
 

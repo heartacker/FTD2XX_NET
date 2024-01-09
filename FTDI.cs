@@ -394,9 +394,11 @@ namespace FTD2XX_NET
             }
             else
             {
-                Console.WriteLine("Failed to load FTD2XX.DLL.  Are the FTDI drivers installed?");
+                Console.WriteLine("Failed to load FTD2XX.  Are the FTDI drivers installed?");
             }
         }
+
+        // string libpathLinux = "libft4222.so.1.4.4.170";
 
         /// <summary>
         /// Non default constructor allowing passing of string for dll handle.
@@ -484,7 +486,7 @@ namespace FTD2XX_NET
                 pFT_VendorCmdGet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdGet");
                 pFT_VendorCmdSet = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSet");
                 // todo FIXME
-                pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
+                // pFT_VendorCmdSetX = GetProcAddress(hFTD2XXDLL, "FT_VendorCmdSetX");
             }
 
         }

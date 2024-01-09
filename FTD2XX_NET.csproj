@@ -3,7 +3,7 @@
 		<AssemblyName>FTD2XX_NET</AssemblyName>
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<TargetFramework>NET8</TargetFramework>
-		<DefineConstants>$(DefineConstants);USE_FT4222_NO_FT232X</DefineConstants>
+		<DefineConstants>$(DefineConstants);USE_FT4222_NO_FT232XN</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
